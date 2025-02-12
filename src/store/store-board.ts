@@ -11,7 +11,6 @@ type Actions = {
     addBoard: (newBoard: Board) => void,
     removeBoard: (boardId: string) => void,
     editBoardName: (boardId: string, newName: string) => void,
-    moveBoard: (boardId: string, newIndex: number) => void,
     addTodo: (boardId: string, todoId: string, todo: string) => void,
     removeTodo: (boardId: string, todoId: string) => void,
     editTodo: (boardId: string, todoId: string, newTodo: string) => void
@@ -26,14 +25,6 @@ export const useBoardStore = create<State & Actions>()(
             removeBoard: (boardId: string) => set({ boards: get().boards.filter((board) => board.id !== boardId) }),
             editBoardName: (boardId: string, newName: string) =>
                 set({ id: boardId, boards: get().boards.map((board) => board.id === boardId ? { ...board, name: newName } : board) }),
-            moveBoard: (boardId: string, newIndex: number) => {
-                const { boards } = get()
-                const updatedBoards = [...boards]
-                const index = updatedBoards.findIndex(b => b.id === boardId)
-                updatedBoards.splice(index, 1)
-                updatedBoards.splice(newIndex, 0, updatedBoards[index])
-                set({ boards: updatedBoards })
-            },
             addTodo: (boardId: string, todoId: string, todo: string) => {
                 const { boards } = get()
                 const updatedBoards = [...boards]
