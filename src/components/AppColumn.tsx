@@ -2,7 +2,7 @@ import { Button } from "./ui/button";
 import { Board } from "@/interface";
 import { useBoardStore } from "@/store/store-board";
 import { v4 as uuidv4 } from 'uuid';
-import { Pencil, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 import { AppTodo } from "./AppTodo";
 import { useState } from "react";
 
@@ -16,12 +16,6 @@ export function AppColumn({ board }: { board: Board }) {
         addTodo(boardId, uuidv4(), "Edit Todo Name")
     }
 
-    function handleEdit(id: string) {
-        const newName = prompt("Enter new board name");
-        if (newName) {
-            editBoardName(id, newName);
-        }
-    }
 
     function handleDelete() {
         const check = confirm("Are you sure you want to delete this board?");
@@ -36,13 +30,13 @@ export function AppColumn({ board }: { board: Board }) {
                     {!editMode && `${board.name} (${board.todos.length} items)`}
                     {editMode && (
                         <input autoFocus
-                        value={board.name}
-                        onChange={(e)=> editBoardName(board.id, e.target.value)}
-                        onBlur={()=>{setEditMode(false)}}
-                        onKeyDown={(e)=>{
-                            if (e.key !== "Enter") return;
-                            setEditMode(false);
-                        }}/>
+                            value={board.name}
+                            onChange={(e) => editBoardName(board.id, e.target.value)}
+                            onBlur={() => { setEditMode(false) }}
+                            onKeyDown={(e) => {
+                                if (e.key !== "Enter") return;
+                                setEditMode(false);
+                            }} />
                     )}
                 </h1>
                 <div className="hover:cursor-pointer absolute right-2 top-1/2 -translate-y-1/2" onClick={handleDelete}>
