@@ -11,7 +11,7 @@ import { createPortal } from 'react-dom';
 import { AppTodo } from "./AppTodo";
 
 export function AppBoard() {
-    const { boards, moveBoard, moveTodo } = useBoardStore()
+    const { boards, moveBoard, moveTodo, moveTodoOverBoard } = useBoardStore()
     const boardId = useMemo(() => boards.map((board) => board.id), [boards])
     const [activeBoard, setActiveBoard] = useState<Board | null>(null)
     const [activeTodo, setActiveTodo] = useState<Todo | null>(null)
@@ -28,6 +28,10 @@ export function AppBoard() {
     }
 
     function onDragEnd(event: DragEndEvent) {
+
+        setActiveBoard(null)
+        setActiveTodo(null)
+        
         const { active, over } = event
         if (!over) return;
 
@@ -54,7 +58,7 @@ export function AppBoard() {
         if (activeId === overId) return;
 
         const isActiveTodo = active.data.current?.type === "Todo"
-
+        
         const sourceBoardId = active.data.current?.boardId
         const targetBoardId = over.data.current?.boardId
 
@@ -67,8 +71,16 @@ export function AppBoard() {
                 moveTodo(sourceBoardId, activeTodoIndex, overTodoIndex)
             }
         }
+
         if (isActiveTodo && sourceBoardId !== targetBoardId) {
             console.log("drag over the board")
+            const board = boards.find((board) => board.id === sourceBoardId)
+            const activeTodoIndex = board?.todos.findIndex((todo) => todo.id === active.id)
+            const targetBoard = boards.find((board) => board.id === targetBoardId)
+            const targetTodoIndex = targetBoard?.todos.findIndex((todo) => todo.id === over.id)
+            if (activeTodoIndex !== undefined && targetTodoIndex !== undefined) {
+                moveTodoOverBoard(sourceBoardId, targetBoardId, activeTodoIndex, targetTodoIndex)
+            }
         }
     }
 

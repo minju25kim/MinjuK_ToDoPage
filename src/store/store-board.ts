@@ -17,6 +17,7 @@ type Actions = {
     removeTodo: (boardId: string, todoId: string) => void,
     editTodo: (boardId: string, todoId: string, newTodo: string) => void,
     moveTodo: (boardId: string, activeIndex: number, overIndex: number) => void,
+    moveTodoOverBoard: (sourceBoardId: string, targetBoardId: string, activeTodoIndex: number, targetTodoIndex: number) => void,
 }
 
 export const useBoardStore = create<State & Actions>()(
@@ -65,6 +66,18 @@ export const useBoardStore = create<State & Actions>()(
                         board.todos = arrayMove(board.todos, activeIndex, overIndex)
                     }
                 })),
+            moveTodoOverBoard: (sourceBoardId: string, targetBoardId: string, activeTodoIndex: number, targetTodoIndex: number) =>
+                set(produce((state: State) => {
+                    const sourceBoard = state.boards.find((b) => b.id === sourceBoardId)
+                    if (sourceBoard) {
+                        const targetBoard = state.boards.find((b) => b.id === targetBoardId)
+                        if (targetBoard) {
+                            targetBoard.todos.splice(targetTodoIndex, 0, sourceBoard?.todos[activeTodoIndex])
+                            sourceBoard.todos = sourceBoard.todos.filter((_, index) => index !== activeTodoIndex)
+                        }
+                    }
+                }
+                ))
 
         }),
         {
