@@ -12,10 +12,11 @@ type Actions = {
     addBoard: (newBoard: Board) => void,
     removeBoard: (boardId: string) => void,
     editBoardName: (boardId: string, newName: string) => void,
+    moveBoard: (activeBoardIndex: number, overBoardIndex: number) => void,
     addTodo: (boardId: string, todoId: string, todo: string) => void,
     removeTodo: (boardId: string, todoId: string) => void,
     editTodo: (boardId: string, todoId: string, newTodo: string) => void,
-    moveBoard: (activeBoardIndex: number, overBoardIndex: number) => void
+    moveTodo: (boardId: string, activeIndex: number, overIndex: number) => void,
 }
 
 export const useBoardStore = create<State & Actions>()(
@@ -35,6 +36,10 @@ export const useBoardStore = create<State & Actions>()(
                     const board = state.boards.find((b) => b.id === boardId)
                     if (board) board.name = newName
                 })),
+            moveBoard: (activeBoardIndex: number, overBoardIndex: number) =>
+                set(produce((state: State) => {
+                    state.boards = arrayMove(state.boards, activeBoardIndex, overBoardIndex)
+                })),
             addTodo: (boardId: string, todoId: string, todo: string) =>
                 set(produce((state: State) => {
                     const board = state.boards.find((b) => b.id === boardId)
@@ -53,10 +58,14 @@ export const useBoardStore = create<State & Actions>()(
                         if (todo) todo.name = newTodo
                     }
                 })),
-            moveBoard: (activeBoardIndex: number, overBoardIndex: number) =>
+            moveTodo: (boardId: string, activeIndex: number, overIndex: number) =>
                 set(produce((state: State) => {
-                    state.boards = arrayMove(state.boards, activeBoardIndex, overBoardIndex)
+                    const board = state.boards.find((b) => b.id === boardId)
+                    if (board) {
+                        board.todos = arrayMove(board.todos, activeIndex, overIndex)
+                    }
                 })),
+
         }),
         {
             name: 'boards',

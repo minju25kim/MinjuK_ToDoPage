@@ -17,7 +17,8 @@ export function AppColumn({ board }: { board: Board }) {
         id: board.id,
         data: {
             type: "Board",
-            board
+            board,
+            boardId: board.id
         }
     })
 
@@ -30,9 +31,9 @@ export function AppColumn({ board }: { board: Board }) {
         return <div
             ref={setNodeRef}
             style={style}
-            className="grid grid-rows-[auto_1fr_auto] gap-2 bg-gray-100 opacity-50 border border-gray-300 rounded-md h-full overflow-hidden"
         />
     }
+
     function handleAdd(boardId: string) {
         addTodo(boardId, uuidv4(), "Edit Todo Name")
     }

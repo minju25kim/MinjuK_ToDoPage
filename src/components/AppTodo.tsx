@@ -13,17 +13,12 @@ export function AppTodo({ todo, boardId }: { todo: Todo, boardId: string }) {
     }
 
     return (
-        <div className="p-2 bg-gray-200 rounded-md relative">
-            <div className="h-full w-full">
-                {!editMode && (
-                    <div
-                        className="text-ellipsis overflow-hidden min-h-[1rem]"
-                        onClick={() => setEditMode(true)}>{todo.name}</div>
-                )}
+        <div className="p-2 bg-gray-200 rounded-md relative h-[200px] w-[300px]" >
+            <div className="h-full w-full" onClick={() => setEditMode(true)}>
+                {!editMode && todo.name}
                 {editMode && (
                     <textarea
-                        className="h-full w-full resize-none border-none rounded
-                        bg-transparent focus:outline-none"
+                        className="h-full w-full resize-none rounded bg-transparent focus:outline-none border-2 border-gray-300 "
                         autoFocus
                         value={todo.name}
                         onBlur={() => { setEditMode(false) }}
