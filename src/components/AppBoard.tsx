@@ -31,7 +31,7 @@ export function AppBoard() {
 
         setActiveBoard(null)
         setActiveTodo(null)
-        
+
         const { active, over } = event
         if (!over) return;
 
@@ -63,7 +63,6 @@ export function AppBoard() {
         const targetBoardId = over.data.current?.boardId
 
         if (isActiveTodo && sourceBoardId == targetBoardId) {
-            console.log("drag over the todo")
             const board = boards.find((board) => board.id === sourceBoardId)
             const activeTodoIndex = board?.todos.findIndex((todo) => todo.id === active.id)
             const overTodoIndex = board?.todos.findIndex((todo) => todo.id === over.id)
@@ -73,7 +72,6 @@ export function AppBoard() {
         }
 
         if (isActiveTodo && sourceBoardId !== targetBoardId) {
-            console.log("drag over the board")
             const board = boards.find((board) => board.id === sourceBoardId)
             const activeTodoIndex = board?.todos.findIndex((todo) => todo.id === active.id)
             const targetBoard = boards.find((board) => board.id === targetBoardId)

@@ -2,7 +2,7 @@ import { Button } from "./ui/button";
 import { Board } from "@/interface";
 import { useBoardStore } from "@/store/store-board";
 import { v4 as uuidv4 } from 'uuid';
-import { Trash } from "lucide-react";
+import { GripVertical, Trash } from "lucide-react";
 import { AppTodo } from "./AppTodo";
 import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
@@ -56,13 +56,13 @@ export function AppColumn({ board }: { board: Board }) {
                 <h1
                     className="p-2 border border-gray-300 rounded-md text-center"
                     onClick={() => setEditMode(true)}
-                    {...attributes}
-                    {...listeners}
                 >
                     {!editMode && `${board.name} (${board.todos.length} items)`}
                     {editMode && (
-                        <input autoFocus
+                        <input
+                            autoFocus
                             value={board.name}
+                            className="resize-none rounded bg-transparent focus:outline-none"
                             onChange={(e) => editBoardName(board.id, e.target.value)}
                             onBlur={() => { setEditMode(false) }}
                             onKeyDown={(e) => {
@@ -71,6 +71,13 @@ export function AppColumn({ board }: { board: Board }) {
                             }} />
                     )}
                 </h1>
+                <div
+                    className="absolute left-2 top-1/2 -translate-y-1/2"
+                    {...attributes}
+                    {...listeners}
+                >
+                    <GripVertical className="w-4 h-4" />
+                </div>
                 <div className="hover:cursor-pointer absolute right-2 top-1/2 -translate-y-1/2" onClick={handleDelete}>
                     <Trash className="w-4 h-4" />
                 </div>

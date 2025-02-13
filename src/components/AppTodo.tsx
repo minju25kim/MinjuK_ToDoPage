@@ -45,7 +45,7 @@ export function AppTodo({ todo, boardId }: { todo: Todo, boardId: string }) {
                 {!editMode && todo.name}
                 {editMode && (
                     <textarea
-                        className="h-full w-full resize-none rounded bg-transparent focus:outline-none border-2 border-gray-300 "
+                        className="h-[90%] w-full resize-none rounded bg-transparent focus:outline-none"
                         autoFocus
                         value={todo.name}
                         onBlur={() => { setEditMode(false) }}
