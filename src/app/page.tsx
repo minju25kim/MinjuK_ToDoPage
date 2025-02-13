@@ -27,7 +27,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="p-2 h-screen grid grid-rows-[auto_1fr] gap-2 bg-gray-100 rounded-md">
+      <div className="p-2 h-[100dvh] grid grid-rows-[auto_1fr] gap-2 bg-gray-100 rounded-md">
         <Button onClick={() => handleAddBoard()}>Add Board</Button>
         <AppBoard />
       </div>
