@@ -6,7 +6,7 @@ import { AppColumn } from "./AppColumn";
 import { DndContext, DragStartEvent, DragOverlay, DragEndEvent, DragOverEvent } from "@dnd-kit/core";
 import { useState } from "react";
 import { SortableContext } from "@dnd-kit/sortable";
-import { Board, Todo } from '@/interfaces';
+import { Board, Todo } from '@/schemas';
 import { createPortal } from 'react-dom';
 import { AppTodo } from "./AppTodo";
 import { useShallow } from 'zustand/react/shallow'
@@ -66,7 +66,7 @@ export function AppBoard() {
         if (activeId === overId) return;
 
         const isActiveTodo = active.data.current?.type === "Todo"
-        
+
         const sourceBoardId = active.data.current?.boardId
         const targetBoardId = over.data.current?.boardId
 

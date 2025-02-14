@@ -1,10 +1,10 @@
-import { Todo } from "@/interfaces";
 import { GripVertical, Trash, Trash2 } from "lucide-react";
 import { useBoardStore } from "@/store/store-board";
 import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useShallow } from 'zustand/react/shallow'
+import { Todo } from "@/schemas";
 
 export function AppTodo({ todo, boardId }: { todo: Todo, boardId: string }) {
     const [editMode, setEditMode] = useState(false);
@@ -46,12 +46,12 @@ export function AppTodo({ todo, boardId }: { todo: Todo, boardId: string }) {
             className="p-2 bg-gray-200 rounded-md relative min-h-[200px] h-[200px] w-[300px]"
         >
             <div className="pl-6  h-full w-full overflow-y-auto" onClick={() => setEditMode(true)}>
-                {!editMode && todo.name}
+                {!editMode && todo.content}
                 {editMode && (
                     <textarea
                         className="h-[90%] w-full resize-none rounded bg-transparent focus:outline-none"
                         autoFocus
-                        value={todo.name}
+                        value={todo.content}
                         onBlur={() => { setEditMode(false) }}
                         onKeyDown={(e) => {
                             if (e.key === "Escape") setEditMode(false);

@@ -1,5 +1,4 @@
 import { Button } from "./ui/button";
-import { Board } from "@/interfaces";
 import { useBoardStore } from "@/store/store-board";
 import { v4 as uuidv4 } from 'uuid';
 import { GripVertical, Trash, Trash2 } from "lucide-react";
@@ -8,13 +7,14 @@ import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useShallow } from 'zustand/react/shallow'
+import { Board } from "@/schemas";
 
 export function AppColumn({ board }: { board: Board }) {
     const [editMode, setEditMode] = useState(false);
     const [isTrashHovered, setIsTrashHovered] = useState(false);
-    const { addTodo, editBoardName, removeBoard } = useBoardStore(useShallow((state) => ({
+    const { addTodo, editBoard, removeBoard } = useBoardStore(useShallow((state) => ({
         addTodo: state.addTodo,
-        editBoardName: state.editBoardName,
+        editBoard: state.editBoard,
         removeBoard: state.removeBoard
     })))
 
@@ -41,7 +41,7 @@ export function AppColumn({ board }: { board: Board }) {
     }
 
     function handleAdd(boardId: string) {
-        addTodo(boardId, uuidv4(), "Edit Todo Name")
+        addTodo(boardId, uuidv4(), "Edit Todo Content")
     }
 
 
@@ -51,6 +51,7 @@ export function AppColumn({ board }: { board: Board }) {
             removeBoard(board.id);
         }
     }
+
     return (
         <div
             key={board.id}
@@ -69,7 +70,7 @@ export function AppColumn({ board }: { board: Board }) {
                             autoFocus
                             value={board.name}
                             className="resize-none rounded bg-transparent focus:outline-none"
-                            onChange={(e) => editBoardName(board.id, e.target.value)}
+                            onChange={(e) => editBoard(board.id, e.target.value)}
                             onBlur={() => { setEditMode(false) }}
                             onKeyDown={(e) => {
                                 if (e.key === "Escape") setEditMode(false);
