@@ -1,17 +1,22 @@
 import { Button } from "./ui/button";
-import { Board } from "@/interface";
+import { Board } from "@/interfaces";
 import { useBoardStore } from "@/store/store-board";
 import { v4 as uuidv4 } from 'uuid';
-import { GripVertical, Trash } from "lucide-react";
+import { GripVertical, Trash, Trash2 } from "lucide-react";
 import { AppTodo } from "./AppTodo";
 import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useShallow } from 'zustand/react/shallow'
 
 export function AppColumn({ board }: { board: Board }) {
     const [editMode, setEditMode] = useState(false);
-
-    const { addTodo, editBoardName, removeBoard } = useBoardStore()
+    const [isTrashHovered, setIsTrashHovered] = useState(false);
+    const { addTodo, editBoardName, removeBoard } = useBoardStore(useShallow((state) => ({
+        addTodo: state.addTodo,
+        editBoardName: state.editBoardName,
+        removeBoard: state.removeBoard
+    })))
 
     const { setNodeRef, attributes, listeners, transition, transform, isDragging } = useSortable({
         id: board.id,
@@ -31,6 +36,7 @@ export function AppColumn({ board }: { board: Board }) {
         return <div
             ref={setNodeRef}
             style={style}
+            className=" bg-gray-100 rounded-md border border-gray-300 opacity-50"
         />
     }
 
@@ -78,8 +84,12 @@ export function AppColumn({ board }: { board: Board }) {
                 >
                     <GripVertical className="w-4 h-4" />
                 </div>
-                <div className="hover:cursor-pointer absolute right-2 top-1/2 -translate-y-1/2" onClick={handleDelete}>
-                    <Trash className="w-4 h-4" />
+                <div
+                    className="hover:cursor-pointer absolute right-2 top-1/2 -translate-y-1/2"
+                    onClick={handleDelete}
+                    onMouseEnter={() => setIsTrashHovered(true)}
+                    onMouseLeave={() => setIsTrashHovered(false)}>
+                    {isTrashHovered ? <Trash2 className="w-4 h-4" /> : <Trash className="w-4 h-4" />}
                 </div>
             </div>
             <div className="flex flex-col gap-2 overflow-y-auto">

@@ -1,14 +1,18 @@
-import { Todo } from "@/interface";
-import { GripVertical, Trash } from "lucide-react";
+import { Todo } from "@/interfaces";
+import { GripVertical, Trash, Trash2 } from "lucide-react";
 import { useBoardStore } from "@/store/store-board";
 import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useShallow } from 'zustand/react/shallow'
 
 export function AppTodo({ todo, boardId }: { todo: Todo, boardId: string }) {
     const [editMode, setEditMode] = useState(false);
-
-    const { removeTodo, editTodo } = useBoardStore()
+    const [isTrashHovered, setIsTrashHovered] = useState(false);
+    const { removeTodo, editTodo } = useBoardStore(useShallow((state) => ({
+        removeTodo: state.removeTodo,
+        editTodo: state.editTodo
+    })))
 
     const { setNodeRef, attributes, listeners, transition, transform, isDragging } = useSortable({
         id: todo.id,
@@ -63,8 +67,12 @@ export function AppTodo({ todo, boardId }: { todo: Todo, boardId: string }) {
             >
                 <GripVertical className="w-4 h-4" />
             </div>
-            <div className="hover:cursor-pointer absolute right-2 bottom-0 -translate-y-1/2" onClick={handleDelete}>
-                <Trash className="w-4 h-4" />
+            <div
+                className="hover:cursor-pointer absolute right-2 bottom-0 -translate-y-1/2"
+                onClick={handleDelete}
+                onMouseEnter={() => setIsTrashHovered(true)}
+                onMouseLeave={() => setIsTrashHovered(false)}>
+                {isTrashHovered ? <Trash2 className="w-4 h-4" /> : <Trash className="w-4 h-4" />}
             </div>
         </div>
     );

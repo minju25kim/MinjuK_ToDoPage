@@ -6,12 +6,20 @@ import { AppColumn } from "./AppColumn";
 import { DndContext, DragStartEvent, DragOverlay, DragEndEvent, DragOverEvent } from "@dnd-kit/core";
 import { useState } from "react";
 import { SortableContext } from "@dnd-kit/sortable";
-import { Board, Todo } from '@/interface';
+import { Board, Todo } from '@/interfaces';
 import { createPortal } from 'react-dom';
 import { AppTodo } from "./AppTodo";
+import { useShallow } from 'zustand/react/shallow'
 
 export function AppBoard() {
-    const { boards, moveBoard, moveTodo, moveTodoOverBoard } = useBoardStore()
+
+    const { boards, moveBoard, moveTodo, moveTodoOverBoard } = useBoardStore(useShallow((state) => ({
+        boards: state.boards,
+        moveBoard: state.moveBoard,
+        moveTodo: state.moveTodo,
+        moveTodoOverBoard: state.moveTodoOverBoard
+    })))
+
     const boardId = useMemo(() => boards.map((board) => board.id), [boards])
     const [activeBoard, setActiveBoard] = useState<Board | null>(null)
     const [activeTodo, setActiveTodo] = useState<Todo | null>(null)

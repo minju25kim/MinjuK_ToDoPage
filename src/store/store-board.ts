@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { Board } from '@/interface'
+import { Board } from '@/interfaces'
 import { produce } from 'immer'
 import { arrayMove } from '@dnd-kit/sortable'
 
