@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { produce } from 'immer'
 import { arrayMove } from '@dnd-kit/sortable'
-import { BoardSchema, TodoSchema, Board, Todo } from '@/schemas';
+import { BoardSchema, TodoSchema, Board } from '@/schemas';
 
 type State = {
     boards: Board[]
