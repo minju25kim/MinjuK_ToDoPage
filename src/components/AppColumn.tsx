@@ -72,6 +72,7 @@ export function AppColumn({ board }: { board: Board }) {
                             onChange={(e) => editBoardName(board.id, e.target.value)}
                             onBlur={() => { setEditMode(false) }}
                             onKeyDown={(e) => {
+                                if (e.key === "Escape") setEditMode(false);
                                 if (e.key !== "Enter") return;
                                 setEditMode(false);
                             }} />

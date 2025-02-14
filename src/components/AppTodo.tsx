@@ -45,7 +45,7 @@ export function AppTodo({ todo, boardId }: { todo: Todo, boardId: string }) {
             style={style}
             className="p-2 bg-gray-200 rounded-md relative min-h-[200px] h-[200px] w-[300px]"
         >
-            <div className="h-full w-full pl-6 overflow-y-auto" onClick={() => setEditMode(true)}>
+            <div className="pl-6  h-full w-full overflow-y-auto" onClick={() => setEditMode(true)}>
                 {!editMode && todo.name}
                 {editMode && (
                     <textarea
@@ -54,6 +54,7 @@ export function AppTodo({ todo, boardId }: { todo: Todo, boardId: string }) {
                         value={todo.name}
                         onBlur={() => { setEditMode(false) }}
                         onKeyDown={(e) => {
+                            if (e.key === "Escape") setEditMode(false);
                             if (e.shiftKey && e.key == "Enter") setEditMode(false);
                         }}
                         onChange={(e) => editTodo(boardId, todo.id, e.target.value)}
