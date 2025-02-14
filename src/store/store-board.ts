@@ -30,15 +30,18 @@ export const useBoardStore = create<State & Actions>()(
                         const validatedBoard = BoardSchema.parse(newBoard)
                         state.boards.push(validatedBoard)
                     } catch (error) {
-                        console.error('Failed to add board:', error)
+                        console.warn('Failed to add board:', error)
+                        return state // Return unchanged state
                     }
                 })),
             removeBoard: (boardId: string) =>
                 set(produce((state: State) => {
                     try {
-                        state.boards = state.boards.filter((board) => board.id !== boardId)
+                        const newBoards = state.boards.filter((board) => board.id !== boardId)
+                        state.boards = newBoards
                     } catch (error) {
-                        console.error('Failed to remove board:', error)
+                        console.warn('Failed to remove board:', error)
+                        return state // Return unchanged state
                     }
                 })),
             editBoard: (boardId: string, newName: string) =>
@@ -120,10 +123,12 @@ export const useBoardStore = create<State & Actions>()(
                             throw new Error('Invalid active todo index')
                         }
 
-                        targetBoard.todos.splice(targetTodoIndex, 0, sourceBoard.todos[activeTodoIndex])
+                        const todoToMove = sourceBoard.todos[activeTodoIndex]
+                        targetBoard.todos.splice(targetTodoIndex, 0, todoToMove)
                         sourceBoard.todos = sourceBoard.todos.filter((_, index) => index !== activeTodoIndex)
                     } catch (error) {
-                        console.error('Failed to move todo between boards:', error)
+                        console.warn('Failed to move todo between boards:', error)
+                        return state // Return unchanged state
                     }
                 }))
         }),
