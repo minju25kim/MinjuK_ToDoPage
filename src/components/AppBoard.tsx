@@ -1,5 +1,3 @@
-'use client'
-
 import { useMemo } from 'react';
 import { useBoardStore } from "@/store/store-board";
 import { AppColumn } from "./AppColumn";

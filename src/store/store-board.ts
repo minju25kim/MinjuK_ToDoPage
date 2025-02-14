@@ -102,10 +102,6 @@ export const useBoardStore = create<State & Actions>()(
                     try {
                         const board = state.boards.find((b) => b.id === boardId)
                         if (!board) throw new Error(`Board with id ${boardId} not found`)
-                        if (activeIndex < 0 || activeIndex >= board.todos.length ||
-                            overIndex < 0 || overIndex >= board.todos.length) {
-                            throw new Error('Invalid todo indices')
-                        }
                         board.todos = arrayMove(board.todos, activeIndex, overIndex)
                     } catch (error) {
                         console.error('Failed to move todo:', error)
