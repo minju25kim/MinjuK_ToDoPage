@@ -61,7 +61,7 @@ export function AppColumn({ board }: { board: Board }) {
         >
             <div className="relative">
                 <h1
-                    className="p-2 border border-gray-300 rounded-md text-center break-words px-6"
+                    className="max-h-[100px] overflow-auto border border-gray-300 rounded-md text-center break-words px-8 py-2 "
                     onClick={() => setEditMode(true)}
                 >
                     {!editMode && `${board.name} (${board.todos.length} items)`}
