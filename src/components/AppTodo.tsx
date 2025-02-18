@@ -45,7 +45,7 @@ export function AppTodo({ todo, boardId }: { todo: Todo, boardId: string }) {
             style={style}
             className="p-2 bg-gray-200 rounded-md relative min-h-[200px] h-[200px] w-[300px]"
         >
-            <div className="pl-6  h-full w-full overflow-y-auto" onClick={() => setEditMode(true)}>
+            <div className="pl-6  h-full w-full overflow-y-auto break-words" onClick={() => setEditMode(true)}>
                 {!editMode && todo.content}
                 {editMode && (
                     <textarea
